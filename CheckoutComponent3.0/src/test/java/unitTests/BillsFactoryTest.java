@@ -2,29 +2,49 @@ package unitTests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import bills.BillItem;
 import main.BillsFactory;
 
 public class BillsFactoryTest {
 
-	String bill;
-	
+	BillsFactory billsFactory;
+
 	@Before
-	public void setBill(){
-		BillsFactory billsFactory = new BillsFactory();
-		bill = billsFactory.getBill("B", 2);
+	public void setBill() {
+		billsFactory = new BillsFactory();
+	}
+
+	@Test
+	public void getBillWithWrongItemName() {
+		List<BillItem> inputItems = new ArrayList<BillItem>();
+		BillItem item = new BillItem();
+		item.setName("wrongName");
+		item.setUnit("1");
+		inputItems.add(item);
+		assertEquals("Found wrong item(s) name(s). Bill calculated for correct. You have to pay: 0.0 PLN for your item(s).", billsFactory.getBill(inputItems));
 	}
 	
 	@Test
-	public void getBillWithOneItem(){
-		assertEquals("15.0",bill.substring(bill.length()-4));
+	public void getBillWithWrongItemUnit() {
+		List<BillItem> inputItems = new ArrayList<BillItem>();
+		BillItem item = new BillItem();
+		item.setName("A");
+		item.setUnit("wrongUnit");
+		inputItems.add(item);
+		assertEquals("Found wrong item(s) units. Bill calculated for correct. You have to pay: 0.0 PLN for your item(s).", billsFactory.getBill(inputItems));
 	}
-	
+
 	@Test
-	public void getBillWithWrongItem(){
-		assertEquals("Wrong item(s) name(s). You didn't receive bill.",new BillsFactory().getBill("c", 156));
+	public void getBillWithNullItem() {
+		List<BillItem> inputItems = new ArrayList<BillItem>();
+		inputItems.add(new BillItem());
+		assertEquals("You have to pay: 0.0 PLN for your item(s).", billsFactory.getBill(inputItems));
 	}
-	
+
 }

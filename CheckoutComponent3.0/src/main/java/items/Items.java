@@ -2,6 +2,6 @@ package items;
 
 public interface Items {
 
-	public double getPrice();
+	public String getName();
 	public double getTotalPrice(int unit);
 }
